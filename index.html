@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>МБОУ СОШ №27 г. Шахты имени Д.И. Донского</title>
+  <style>
+    /* ================= ШРИФТ ================= */
+    @font-face {
+      font-family: "MyriadProCond";
+      src: local("Myriad Pro Condensed"),
+           local("MyriadPro-Cond"),
+           url("fonts/MyriadPro-Cond.woff2") format("woff2"),
+           url("fonts/MyriadPro-Cond.woff") format("woff"),
+           url("fonts/MyriadPro-Cond.otf") format("opentype"),
+           url("fonts/MyriadPro-Cond.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /*
+      Если есть файл жирного начертания, раскомментируйте:
+    @font-face {
+      font-family: "MyriadProCond";
+      src: url("fonts/MyriadPro-BoldCond.woff2") format("woff2"),
+           url("fonts/MyriadPro-BoldCond.otf") format("opentype");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    */
+
+    /* ================= ПЕРЕМЕННЫЕ (цветовая гамма) ================= */
+    :root {
+      --page-bg: #ebebeb;
+      --primary: #1f4e8c;         /* основной синий */
+      --primary-dark: #15365f;    /* тёмный синий: подвал, наведение */
+      --primary-light: #2c64ad;   /* кнопки aside */
+      --primary-pale: #dde7f3;    /* подложка фото новостей */
+      --hover-text: #bcd4f5;      /* светлый текст при наведении */
+      --accent: #e07b24;          /* активный пункт в aside */
+      --white: #ffffff;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --font-main: "MyriadProCond", "Roboto Condensed", "Arial Narrow", Arial, sans-serif;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      font-family: var(--font-main);
+    }
+
+    body {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.35;
+      color: var(--text);
+      background: var(--page-bg);
+      font-synthesis: weight style;
+    }
+
+    a,
+    p,
+    span,
+    label,
+    address,
+    button,
+    input,
+    select,
+    textarea,
+    time {
+      font-family: inherit;
+    }
+
+    /* ================= КАРКАС ================= */
+    .page {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .page__content {
+      flex: 1 0 auto; /* прижимает подвал к низу */
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    /* ================= ШАПКА ================= */
+    .header {
+      width: 100%;
+      color: var(--white);
+      background: linear-gradient(120deg, var(--primary-light) 0%, var(--primary) 45%, var(--primary-dark) 100%);
+    }
+
+    .header__inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 40px;
+      padding-top: 22px;
+      padding-bottom: 22px;
+    }
+
+    .header__brand {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .header__logo {
+      display: block;
+      flex-shrink: 0;
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+    }
+
+    .header__title {
+      display: flex;
+      flex-direction: column;
+      text-transform: uppercase;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .header__title-main {
+      font-size: 34px;
+      line-height: 1.1;
+    }
+
+    .header__title-sub {
+      margin-top: 4px;
+      font-size: 26px;
+      line-height: 1.1;
+      opacity: 0.9;
+    }
+
+    /* Правая часть шапки: контакты */
+    .header__contacts {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+      flex-shrink: 0;
+      font-style: normal;
+    }
+
+    .header__phone {
+      font-size: 34px;
+      line-height: 1.1;
+      color: var(--white);
+      text-decoration: none;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      transition: color 0.2s;
+    }
+
+    .header__line {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 18px;
+      color: var(--white);
+      text-decoration: none;
+      opacity: 0.92;
+      transition: color 0.2s;
+    }
+
+    .header__line svg {
+      flex-shrink: 0;
+    }
+
+    .header__phone:hover,
+    .header__line:hover {
+      color: var(--hover-text);
+    }
+
+    /* ================= МЕНЮ ================= */
+    .nav {
+      background: rgba(0, 0, 0, 0.2);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .nav__toggle {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .nav__burger {
+      display: none;
+    }
+
+    .nav__list {
+      display: flex;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .nav__item {
+      flex: 1;
+    }
+
+    .nav__item + .nav__item {
+      border-left: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .nav__link {
+      display: block;
+      padding: 15px 10px;
+      color: var(--white);
+      font-size: 18px;
+      font-weight: 700;
+      text-align: center;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .nav__link:hover {
+      background: rgba(0, 0, 0, 0.18);
+    }
+
+    /* ================= ASIDE + КОНТЕНТ ================= */
+    .layout {
+      display: grid;
+      grid-template-columns: 370px 1fr;
+      align-items: start;
+      gap: 40px;
+      padding-top: 30px;
+      padding-bottom: 40px;
+    }
+
+    /* ---------- Aside ---------- */
+    .aside__block + .aside__block {
+      margin-top: 34px;
+    }
+
+    .aside__title {
+      display: block;
+      margin: 0 0 14px;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.15;
+      text-align: center;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    a.aside__title:hover {
+      color: var(--primary);
+    }
+
+    .aside__list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .aside__link {
+      display: block;
+      padding: 8px 14px;
+      border-radius: 8px;
+      background: var(--primary-light);
+      color: var(--white);
+      font-size: 18px;
+      line-height: 1.3;
+      text-align: center;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .aside__link:hover {
+      background: var(--primary);
+    }
+
+    /* Текущая страница (класс ставит админка) */
+    .aside__link--active,
+    .aside__link--active:hover {
+      background: var(--accent);
+    }
+
+    /* ---------- Контент ---------- */
+    .content {
+      min-width: 0;
+      padding-top: 8px;
+    }
+
+    /* Хлебные крошки — для внутренних страниц */
+    .breadcrumbs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 0 0 14px;
+      padding: 0;
+      list-style: none;
+      font-size: 16px;
+      color: var(--muted);
+    }
+
+    .breadcrumbs li + li::before {
+      content: "›";
+      margin-right: 6px;
+    }
+
+    .breadcrumbs a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .breadcrumbs a:hover {
+      text-decoration: underline;
+    }
+
+    /* Текст страниц из админки: оборачивается в <div class="article"> */
+    .article h1 {
+      margin: 0 0 26px;
+      font-size: 32px;
+      line-height: 1.15;
+    }
+
+    .article h2 {
+      margin: 32px 0 14px;
+      font-size: 21px;
+      line-height: 1.2;
+    }
+
+    .article p {
+      margin: 0 0 14px;
+    }
+
+    .article ul,
+    .article ol {
+      margin: 0 0 14px;
+      padding-left: 50px;
+    }
+
+    .article li {
+      margin-bottom: 4px;
+    }
+
+    .article li::marker {
+      color: var(--primary);
+    }
+
+    .article a {
+      color: var(--primary);
+      text-underline-offset: 2px;
+      transition: color 0.2s;
+    }
+
+    .article a:hover {
+      color: var(--primary-dark);
+    }
+
+    /* ================= НОВОСТИ (главная) ================= */
+    .news__title {
+      margin: 0 0 26px;
+      font-size: 28px;
+      font-weight: 700;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .news__grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 36px 30px;
+    }
+
+    .news-card {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    /* Фото: белая рамка + серая обводка */
+    .news-card__img {
+      display: block;
+      height: 145px;
+      overflow: hidden;
+      border: 3px solid var(--white);
+      border-radius: 14px;
+      box-shadow: 0 0 0 2px #9a9a9a;
+      /* подложка, пока нет фото */
+      background: var(--primary-pale) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 24 24' fill='none' stroke='%231f4e8c' stroke-width='1.5'%3E%3Crect x='3' y='5' width='18' height='14' rx='2'/%3E%3Ccircle cx='9' cy='10' r='2'/%3E%3Cpath d='M21 16l-5-5-8 8'/%3E%3C/svg%3E") center / 48px no-repeat;
+    }
+
+    .news-card__img img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .news-card__body {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .news-card__name {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .news-card__name a {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      color: var(--primary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .news-card__name a:hover {
+      color: var(--primary-dark);
+    }
+
+    .news-card__date {
+      margin-top: 3px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .news-card__text {
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin: 6px 0 12px;
+      font-size: 17px;
+      line-height: 1.4;
+    }
+
+    .news-card__more {
+      align-self: flex-end;
+      margin-top: auto;
+      padding: 6px 10px;
+      background: #d2d2d2;
+      color: #333333;
+      font-size: 16px;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .news-card__more:hover {
+      background: var(--primary);
+      color: var(--white);
+    }
+
+    .news__all {
+      display: flex;
+      justify-content: center;
+      margin-top: 36px;
+    }
+
+    .news__all-link {
+      padding: 10px 34px;
+      border-radius: 8px;
+      background: var(--primary-light);
+      color: var(--white);
+      font-size: 18px;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .news__all-link:hover {
+      background: var(--primary);
+    }
+
+    /* ================= КАРТА (во всю ширину) ================= */
+    .map {
+      width: 100%;
+      height: 400px;
+      background: #dcdcdc;
+    }
+
+    .map iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* ================= ПОДВАЛ ================= */
+    .footer {
+      flex-shrink: 0;
+      width: 100%;
+      background: var(--primary-dark);
+      color: var(--white);
+    }
+
+    .footer__inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: stretch;
+      gap: 40px;
+      min-height: 210px;
+      padding-top: 28px;
+      padding-bottom: 20px;
+    }
+
+    .footer__left {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 32px;
+    }
+
+    .footer__org {
+      max-width: 760px;
+    }
+
+    .footer__org-type {
+      margin: 0 0 2px;
+      font-size: 17px;
+    }
+
+    .footer__school {
+      font-size: 19px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--white);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer__school:hover {
+      color: var(--hover-text);
+    }
+
+    .footer__contacts {
+      font-style: normal;
+    }
+
+    .footer__row {
+      margin: 0;
+      font-weight: 700;
+    }
+
+    .footer__link {
+      color: var(--white);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer__link:hover {
+      color: var(--hover-text);
+    }
+
+    .footer__right {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 32px;
+      flex-shrink: 0;
+    }
+
+    .footer__social {
+      display: flex;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .footer__social:hover {
+      opacity: 0.8;
+    }
+
+    /* Заглушка иконки: замените на <img src="assets/vk.svg" alt=""> */
+    .footer__social-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: var(--white);
+      color: var(--primary-dark);
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .footer__policy {
+      font-size: 17px;
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    /* ================= АДАПТИВ ================= */
+    @media (max-width: 1250px) {
+      .news__grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 1100px) {
+      .header__title-main { font-size: 26px; }
+      .header__title-sub  { font-size: 20px; }
+      .header__phone      { font-size: 26px; }
+      .nav__link          { font-size: 16px; }
+      .layout             { grid-template-columns: 290px 1fr; gap: 30px; }
+      .aside__link        { font-size: 16px; }
+    }
+
+    @media (max-width: 860px) {
+      .container {
+        padding: 0 16px;
+      }
+
+      .header__inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 18px;
+      }
+
+      .header__brand { gap: 16px; }
+      .header__logo  { width: 80px; height: 80px; }
+
+      .header__contacts {
+        align-items: flex-start;
+      }
+
+      /* Бургер-меню без JS */
+      .nav__burger {
+        display: block;
+        padding: 12px 0;
+        font-size: 18px;
+        font-weight: 700;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+
+      .nav__burger::before {
+        content: "☰ ";
+      }
+
+      .nav__list {
+        display: none;
+        flex-direction: column;
+        padding-bottom: 10px;
+      }
+
+      .nav__toggle:checked ~ .nav__list {
+        display: flex;
+      }
+
+      .nav__item + .nav__item {
+        border-left: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+      }
+
+      .nav__link {
+        text-align: left;
+      }
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .aside {
+        order: 2; /* на телефоне разделы уходят под контент */
+      }
+
+      .article h1 {
+        font-size: 26px;
+      }
+
+      .article ul,
+      .article ol {
+        padding-left: 24px;
+      }
+
+      .map {
+        height: 320px;
+      }
+
+      .footer__inner {
+        flex-direction: column;
+        min-height: 0;
+      }
+
+      .footer__right {
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .news-card {
+        grid-template-columns: 1fr;
+      }
+
+      .news-card__img {
+        height: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- ================= ШАПКА ================= -->
+    <header class="header">
+      <div class="container header__inner">
+
+        <a class="header__brand" href="/">
+          <img class="header__logo" src="assets/logo.jpg" alt="Логотип школы №27">
+          <span class="header__title">
+            <span class="header__title-main">Средняя общеобразовательная школа №27</span>
+            <span class="header__title-sub">имени Д.И.&nbsp;Донского</span>
+          </span>
+        </a>
+
+        <address class="header__contacts">
+          <a class="header__phone" href="tel:+78636268741">+7 (8636) 26-87-41</a>
+          <a class="header__line" href="mailto:russchool27@rambler.ru">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+              <path d="M22 6l-10 7L2 6"/>
+            </svg>
+            russchool27@rambler.ru
+          </a>
+          <a class="header__line" href="#map">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            г.&nbsp;Шахты, ул.&nbsp;Азовская, 46
+          </a>
+        </address>
+
+      </div>
+
+      <nav class="nav" aria-label="Главное меню">
+        <div class="container">
+          <input class="nav__toggle" type="checkbox" id="nav-toggle">
+          <label class="nav__burger" for="nav-toggle">Меню</label>
+
+          <ul class="nav__list">
+            <li class="nav__item"><a class="nav__link" href="/">Главная</a></li>
+            <li class="nav__item"><a class="nav__link" href="/o-shkole">О школе</a></li>
+            <li class="nav__item"><a class="nav__link" href="/novosti">Новости</a></li>
+            <li class="nav__item"><a class="nav__link" href="/uchenikam">Ученикам</a></li>
+            <li class="nav__item"><a class="nav__link" href="/roditelyam">Родителям</a></li>
+            <li class="nav__item"><a class="nav__link" href="/pedagogam">Педагогам</a></li>
+            <li class="nav__item"><a class="nav__link" href="/kontakty">Контакты</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <!-- ================= ASIDE + КОНТЕНТ ================= -->
+    <div class="page__content">
+      <div class="container layout">
+
+        <!-- ASIDE: текущему пункту админка добавляет класс aside__link--active -->
+        <aside class="aside">
+
+          <!-- Сведения об образовательной организации -->
+          <nav class="aside__block" aria-label="Сведения об образовательной организации">
+            <a class="aside__title" href="https://www.russchool27.ru/%d0%b8%d0%bd%d1%84%d0%be%d1%80%d0%bc%d0%b0%d1%86%d0%b8%d1%8f-%d0%be-%d1%88%d0%ba%d0%be%d0%bb%d0%b5">
+              Сведения об образовательной организации
+            </a>
+            <ul class="aside__list">
+              <li><a class="aside__link" href="https://www.russchool27.ru/%d0%b8%d0%bd%d1%84%d0%be%d1%80%d0%bc%d0%b0%d1%86%d0%b8%d1%8f-%d0%be-%d1%88%d0%ba%d0%be%d0%bb%d0%b5/%d0%be%d1%81%d0%bd%d0%be%d0%b2%d0%bd%d1%8b%d0%b5-%d1%81%d0%b2%d0%b5%d0%b4%d0%b5%d0%bd%d0%b8%d1%8f">Основные сведения</a></li>
+              <li><a class="aside__link" href="https://www.russchool27.ru/%d0%b8%d0%bd%d1%84%d0%be%d1%80%d0%bc%d0%b0%d1%86%d0%b8%d1%8f-%d0%be-%d1%88%d0%ba%d0%be%d0%bb%d0%b5/%d1%81%d1%82%d1%80%d1%83%d0%ba%d1%82%d1%83%d1%80%d0%b0-%d0%b8-%d0%be%d1%80%d0%b3%d0%b0%d0%bd%d1%8b-%d1%83%d0%bf%d1%80%d0%b0%d0%b2%d0%bb%d0%b5%d0%bd%d0%b8%d1%8f-%d0%be%d0%b1%d1%80%d0%b0%d0%b7%d0%be">Структура и органы управления образовательной организацией</a></li>
+              <li><a class="aside__link" href="https://www.russchool27.ru/%d0%b8%d0%bd%d1%84%d0%be%d1%80%d0%bc%d0%b0%d1%86%d0%b8%d1%8f-%d0%be-%d1%88%d0%ba%d0%be%d0%bb%d0%b5/%d0%b4%d0%be%d0%ba%d1%83%d0%bc%d0%b5%d0%bd%d1%82%d1%8b">Документы</a></li>
+              <li><a class="aside__link" href="https://www.russchool27.ru/%d0%b8%d0%bd%d1%84%d0%be%d1%80%d0%bc%d0%b0%d1%86%d0%b8%d1%8f-%d0%be-%d1%88%d0%ba%d0%be%d0%bb%d0%b5/%d0%be%d0%b1%d1%80%d0%b0%d0%b7%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5">Образование</a></li>
+              <li><a class="aside__link" href="https://www.russchool27.ru/%d0%b8%d0%bd%d1%84%d0%be%d1%80%d0%bc%d0%b0%d1%86%d0%b8%d1%8f-%d0%be-%d1%88%d0%ba%d0%be%d0%bb%d0%b5/%d0%be%d0%b1%d1%80%d0%b0%d0%b7%d0%be%d0%b2%d0%b0%d1%82%d0%b5%d0%bb%d1%8c%d0%bd%d1%8b%d0%b5-%d1%81%d1%82%d0%b0%d0%bd%d0%b4%d0%b0%d1%80%d1%82%d1%8b">Образовательные стандарты и требования</a></li>
+              <li><a class="aside__link" href="https://www.russchool27.ru/%d0%b8%d0%bd%d1%84%d0%be%d1%80%d0%bc%d0%b0%d1%86%d0%b8%d1%8f-%d0%be-%d1%88%d0%ba%d0%be%d0%bb%d0%b5/%d1%80%d1%83%d0%ba%d0%be%d0%b2%d0%be%d0%b4%d1%81%d1%82%d0%b2%d0%be-%d0%bf%d0%b5%d0%b4%d0%b0%d0%b3%d0%be%d0%b3%d0%b8%d1%87%d0%b5%d1%81%d0%ba%d0%b8%d0%b9-%d1%81%d0%be%d1%81%d1%82%d0%b0%d0%b2">Педагогический состав 2026–2027 учебный год</a></li>
+              <li><a class="aside__link" href="https://www.russchool27.ru/%d0%b8%d0%bd%d1%84%d0%be%d1%80%d0%bc%d0%b0%d1%86%d0%b8%d1%8f-%d0%be-%d1%88%d0%ba%d0%be%d0%bb%d0%b5/%d0%bc%d0%b0%d1%82%d0%b5%d1%80%d0%b8%d0%b0%d0%bb%d1%8c%d0%bd%d0%be-%d1%82%d0%b5%d1%85%d0%bd%d0%b8%d1%87%d0%b5%d1%81%d0%ba%d0%be%d0%b5-%d0%be%d0%b1%d0%b5%d1%81%d0%bf%d0%b5%d1%87%d0%b5%d0%bd%d0%b8%d0%b5">Материально-техническое обеспечение и оснащённость образовательного процесса</a></li>
+              <li><a class="aside__link" href="https://www.russchool27.ru/%d0%b8%d0%bd%d1%84%d0%be%d1%80%d0%bc%d0%b0%d1%86%d0%b8%d1%8f-%d0%be-%d1%88%d0%ba%d0%be%d0%bb%d0%b5/%d0%bf%d0%bb%d0%b0%d1%82%d0%bd%d1%8b%d0%b5-%d0%be%d0%b1%d1%80%d0%b0%d0%b7%d0%be%d0%b2%d0%b0%d1%82%d0%b5%d0%bb%d1%8c%d0%bd%d1%8b%d0%b5-%d1%83%d1%81%d0%bb%d1%83%d0%b3%d0%b8">Платные образовательные услуги</a></li>
+              <li><a class="aside__link" href="https://www.russchool27.ru/%d0%b8%d0%bd%d1%84%d0%be%d1%80%d0%bc%d0%b0%d1%86%d0%b8%d1%8f-%d0%be-%d1%88%d0%ba%d0%be%d0%bb%d0%b5/%d1%84%d0%b8%d0%bd%d0%b0%d0%bd%d1%81%d0%be%d0%b2%d0%be-%d1%85%d0%be%d0%b7%d1%8f%d0%b9%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%b0%d1%8f-%d0%b4%d0%b5%d1%8f%d1%82%d0%b5%d0%bb%d1%8c%d0%bd%d0%be%d1%81%d1%82">Финансово-хозяйственная деятельность</a></li>
+              <li><a class="aside__link" href="https://www.russchool27.ru/%d0%b8%d0%bd%d1%84%d0%be%d1%80%d0%bc%d0%b0%d1%86%d0%b8%d1%8f-%d0%be-%d1%88%d0%ba%d0%be%d0%bb%d0%b5/%d0%b2%d0%b0%d0%ba%d0%b0%d0%bd%d1%82%d0%bd%d1%8b%d0%b5-%d0%bc%d0%b5%d1%81%d1%82%d0%b0-%d0%b4%d0%bb%d1%8f-%d0%bf%d1%80%d0%b8%d0%b5%d0%bc%d0%b0-%d0%bf%d0%b5%d1%80%d0%b5%d0%b2%d0%be%d0%b4%d0%b0">Вакантные места для приёма (перевода)</a></li>
+            </ul>
+          </nav>
+
+          <!-- Ученикам и родителям -->
+          <nav class="aside__block" aria-label="Ученикам и родителям">
+            <p class="aside__title">Ученикам и родителям</p>
+            <ul class="aside__list">
+              <li><a class="aside__link" href="https://www.russchool27.ru/%d0%bf%d1%80%d0%b8%d1%91%d0%bc-%d0%b2-%d0%bf%d0%b5%d1%80%d0%b2%d1%8b%d0%b9-%d0%ba%d0%bb%d0%b0%d1%81%d1%81">Приём в первый класс</a></li>
+              <li><a class="aside__link" href="https://www.russchool27.ru/%d0%b8%d1%82%d0%be%d0%b3%d0%be%d0%b2%d0%b0%d1%8f-%d0%b0%d1%82%d1%82%d0%b5%d1%81%d1%82%d0%b0%d1%86%d0%b8%d1%8f-2">Итоговая аттестация 2025–2026</a></li>
+              <li><a class="aside__link" href="https://www.russchool27.ru/%d0%b2%d1%81%d0%b5%d1%80%d0%be%d1%81%d1%81%d0%b8%d0%b9%d1%81%d0%ba%d0%b8%d0%b5-%d0%bf%d1%80%d0%be%d0%b2%d0%b5%d1%80%d0%be%d1%87%d0%bd%d1%8b%d0%b5-%d1%80%d0%b0%d0%b1%d0%be%d1%82%d1%8b-%d0%b2%d0%bf">Всероссийские проверочные работы (ВПР) 2026</a></li>
+              <li><a class="aside__link" href="https://www.russchool27.ru/%d0%be%d1%80%d0%b3%d0%b0%d0%bd%d0%b8%d0%b7%d0%b0%d1%86%d0%b8%d1%8f-%d0%bf%d0%b8%d1%82%d0%b0%d0%bd%d0%b8%d1%8f-%d0%b2-%d0%be%d0%b1%d1%80%d0%b0%d0%b7%d0%be%d0%b2%d0%b0%d1%82%d0%b5%d0%bb%d1%8c%d0%bd">Организация питания</a></li>
+              <li><a class="aside__link" href="https://www.russchool27.ru/%d0%b4%d0%b8%d1%81%d1%82%d0%b0%d0%bd%d1%86%d0%b8%d0%be%d0%bd%d0%bd%d0%be%d0%b5-%d0%be%d0%b1%d1%83%d1%87%d0%b5%d0%bd%d0%b8%d0%b5">Дистанционное обучение</a></li>
+              <li><a class="aside__link" href="https://www.russchool27.ru/%d1%80%d0%be%d0%b4%d0%b8%d1%82%d0%b5%d0%bb%d1%8f%d0%bc">Родителям</a></li>
+            </ul>
+          </nav>
+
+         
+
+        </aside>
+
+        <!-- КОНТЕНТ ГЛАВНОЙ: НОВОСТИ
+             На внутренних страницах здесь выводятся хлебные крошки
+             и текст из админки внутри <div class="article">...</div> -->
+        <main class="content">
+          <section class="news">
+            <h1 class="news__title">Новости школы</h1>
+
+            <div class="news__grid">
+
+              <!-- Карточка новости: повторяется в цикле -->
+              <article class="news-card">
+                <a class="news-card__img" href="#">
+                  <img src="assets/news/news-1.jpg" alt="" loading="lazy" onerror="this.remove()">
+                </a>
+                <div class="news-card__body">
+                  <h2 class="news-card__name"><a href="#">День знаний — 2026</a></h2>
+                  <time class="news-card__date" datetime="2026-09-01">1 сентября 2026</time>
+                  <p class="news-card__text">1 сентября в школе прошла торжественная линейка. Первоклассники впервые переступили порог школы, а выпускники дали первый звонок нового учебного года.</p>
+                  <a class="news-card__more" href="#">Подробнее</a>
+                </div>
+              </article>
+
+              <article class="news-card">
+                <a class="news-card__img" href="#">
+                  <img src="assets/news/news-2.jpg" alt="" loading="lazy" onerror="this.remove()">
+                </a>
+                <div class="news-card__body">
+                  <h2 class="news-card__name"><a href="#">День солидарности в борьбе с терроризмом</a></h2>
+                  <time class="news-card__date" datetime="2026-09-03">3 сентября 2026</time>
+                  <p class="news-card__text">В классах прошли тематические часы, посвящённые памяти жертв террористических актов. Ребята говорили о важности единства и взаимопомощи.</p>
+                  <a class="news-card__more" href="#">Подробнее</a>
+                </div>
+              </article>
+
+              <article class="news-card">
+                <a class="news-card__img" href="#">
+                  <img src="assets/news/news-3.jpg" alt="" loading="lazy" onerror="this.remove()">
+                </a>
+                <div class="news-card__body">
+                  <h2 class="news-card__name"><a href="#">Неделя безопасности дорожного движения</a></h2>
+                  <time class="news-card__date" datetime="2026-09-08">8 сентября 2026</time>
+                  <p class="news-card__text">Отряд юных инспекторов движения провёл для младших школьников занятия по правилам дорожного движения и безопасному маршруту «дом — школа — дом».</p>
+                  <a class="news-card__more" href="#">Подробнее</a>
+                </div>
+              </article>
+
+              <article class="news-card">
+                <a class="news-card__img" href="#">
+                  <img src="assets/news/news-4.jpg" alt="" loading="lazy" onerror="this.remove()">
+                </a>
+                <div class="news-card__body">
+                  <h2 class="news-card__name"><a href="#">Урок мужества в школьном музее</a></h2>
+                  <time class="news-card__date" datetime="2026-09-10">10 сентября 2026</time>
+                  <p class="news-card__text">Члены военно-патриотического клуба «Беркут» провели для пятиклассников экскурсию по школьному музею и рассказали об истории школы.</p>
+                  <a class="news-card__more" href="#">Подробнее</a>
+                </div>
+              </article>
+
+              <article class="news-card">
+                <a class="news-card__img" href="#">
+                  <img src="assets/news/news-5.jpg" alt="" loading="lazy" onerror="this.remove()">
+                </a>
+                <div class="news-card__body">
+                  <h2 class="news-card__name"><a href="#">Школьный этап олимпиады школьников</a></h2>
+                  <time class="news-card__date" datetime="2026-09-14">14 сентября 2026</time>
+                  <p class="news-card__text">Стартовал школьный этап всероссийской олимпиады школьников. График проведения по предметам опубликован в разделе для учеников.</p>
+                  <a class="news-card__more" href="#">Подробнее</a>
+                </div>
+              </article>
+
+              <article class="news-card">
+                <a class="news-card__img" href="#">
+                  <img src="assets/news/news-6.jpg" alt="" loading="lazy" onerror="this.remove()">
+                </a>
+                <div class="news-card__body">
+                  <h2 class="news-card__name"><a href="#">Памятки по профилактике ОРВИ и гриппа</a></h2>
+                  <time class="news-card__date" datetime="2026-09-15">15 сентября 2026</time>
+                  <p class="news-card__text">Памятки по профилактике острых респираторных вирусных инфекций, в том числе гриппа. Берегите себя и будьте здоровы!</p>
+                  <a class="news-card__more" href="#">Подробнее</a>
+                </div>
+              </article>
+
+            </div>
+
+            <div class="news__all">
+              <a class="news__all-link" href="/novosti">Все новости</a>
+            </div>
+          </section>
+        </main>
+
+      </div>
+    </div>
+
+    <!-- ================= КАРТА (во всю ширину) ================= -->
+    <section class="map" id="map" aria-label="Школа на карте">
+      <iframe
+        src="https://yandex.ru/map-widget/v1/?um=constructor%3Aa58117da8890dd066e6c51ae9ec8d6b6573aae4f92f110635be064dc1d083f90&amp;source=constructor"
+        title="Школа №27 на Яндекс Картах"
+        loading="lazy"
+        allowfullscreen></iframe>
+    </section>
+
+    <!-- ================= ПОДВАЛ ================= -->
+    <footer class="footer">
+      <div class="container footer__inner">
+
+        <div class="footer__left">
+          <div class="footer__org">
+            <p class="footer__org-type">
+              Муниципальное бюджетное общеобразовательное учреждение г.&nbsp;Шахты Ростовской области
+            </p>
+            <a class="footer__school" href="https://www.russchool27.ru/">
+              Средняя общеобразовательная школа №27 имени Д.И.&nbsp;Донского (МБОУ СОШ №27 г.&nbsp;Шахты)
+            </a>
+          </div>
+
+          <address class="footer__contacts">
+            <p class="footer__row">346516, г.&nbsp;Шахты, Ростовская область, ул.&nbsp;Азовская, 46</p>
+            <p class="footer__row">
+              тел./факс:
+              <a class="footer__link" href="tel:+78636268741">+7 (8636) 26-87-41</a>
+            </p>
+            <p class="footer__row">
+              e-mail:
+              <a class="footer__link" href="mailto:russchool27@rambler.ru">russchool27@rambler.ru</a>
+            </p>
+          </address>
+        </div>
+
+        <div class="footer__right">
+          <a class="footer__social" href="https://vk.com/" target="_blank" rel="noopener noreferrer" aria-label="Группа ВКонтакте">
+            <span class="footer__social-icon">VK</span>
+          </a>
+          <a class="footer__link footer__policy" href="/privacy">Политика конфиденциальности</a>
+        </div>
+
+      </div>
+    </footer>
+
+  </div>
+</body>
+</html>
